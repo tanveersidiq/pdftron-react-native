@@ -37,11 +37,11 @@ const propTypes = {
   onLoadComplete: func<(path: string) => void>(),
   onDocumentError: func<(error: string) => void>(),
   onError: func<(error: string) => void>(),
-  onPageChanged: func<(event: {previousPageNumber: number, pageNumber: number}) => void>(),
-  onScrollChanged: func<(event: {horizontal: number, vertical: number}) => void>(),
-  onZoomChanged: func<(event: {zoom: number}) => void>(),
-  onScaleChanged: func<(event: {scale: number}) => void>(),
-  onZoomFinished: func<(event: {zoom: number}) => void>(),
+  onPageChanged: func<(event: { previousPageNumber: number, pageNumber: number }) => void>(),
+  onScrollChanged: func<(event: { horizontal: number, vertical: number }) => void>(),
+  onZoomChanged: func<(event: { zoom: number }) => void>(),
+  onScaleChanged: func<(event: { scale: number }) => void>(),
+  onZoomFinished: func<(event: { zoom: number }) => void>(),
   zoom: PropTypes.number,
   scale: PropTypes.number,
   disabledElements: arrayOf<Config.Buttons>(Config.Buttons),
@@ -63,11 +63,11 @@ const propTypes = {
   downloadDialogEnabled: PropTypes.bool,
   pageIndicatorEnabled: PropTypes.bool,
   keyboardShortcutsEnabled: PropTypes.bool,
-  onAnnotationsSelected: func<(event: {annotations: Array<AnnotOptions.Annotation>}) => void>(),
-  onAnnotationChanged: func<(event: {action: string, annotations: Array<AnnotOptions.Annotation>}) => void>(),
-  onAnnotationFlattened: func<(event: {annotations: Array<AnnotOptions.Annotation>}) => void>(),
-  onFormFieldValueChanged: func<(event: {fields: Array<AnnotOptions.Field>}) => void>(),
-  onAnnotationToolbarItemPress: func<(event: {id: string}) => void>(),
+  onAnnotationsSelected: func<(event: { annotations: Array<AnnotOptions.Annotation> }) => void>(),
+  onAnnotationChanged: func<(event: { action: string, annotations: Array<AnnotOptions.Annotation> }) => void>(),
+  onAnnotationFlattened: func<(event: { annotations: Array<AnnotOptions.Annotation> }) => void>(),
+  onFormFieldValueChanged: func<(event: { fields: Array<AnnotOptions.Field> }) => void>(),
+  onAnnotationToolbarItemPress: func<(event: { id: string }) => void>(),
   onSavedSignaturesChanged: func<() => void>(),
   readOnly: PropTypes.bool,
   thumbnailViewEditingEnabled: PropTypes.bool,
@@ -153,16 +153,16 @@ const propTypes = {
   annotationManagerEditMode: oneOf<Config.AnnotationManagerEditMode>(Config.AnnotationManagerEditMode),
   annotationManagerUndoMode: oneOf<Config.AnnotationManagerUndoMode>(Config.AnnotationManagerUndoMode),
   replyReviewStateEnabled: PropTypes.bool,
-  onPageMoved: func<(event: {previousPageNumber: number, pageNumber: number}) => void>(),
-  onPagesAdded: func<(event: {pageNumbers: Array<number>}) => void>(),
-  onPagesRemoved: func<(event: {pageNumbers: Array<number>}) => void>(),
-  onPagesRotated: func<(event: {pageNumbers: Array<number>}) => void>(),
-  onTabChanged: func<(event: {currentTab: string}) => void>(),
+  onPageMoved: func<(event: { previousPageNumber: number, pageNumber: number }) => void>(),
+  onPagesAdded: func<(event: { pageNumbers: Array<number> }) => void>(),
+  onPagesRemoved: func<(event: { pageNumbers: Array<number> }) => void>(),
+  onPagesRotated: func<(event: { pageNumbers: Array<number> }) => void>(),
+  onTabChanged: func<(event: { currentTab: string }) => void>(),
   rememberLastUsedTool: PropTypes.bool,
   overflowMenuButtonIcon: PropTypes.string,
   maxSignatureCount: PropTypes.number,
   overrideToolbarButtonBehavior: arrayOf<Config.Buttons>(Config.Buttons),
-  onToolbarButtonPress: func<(event: {id: string}) => void>(),
+  onToolbarButtonPress: func<(event: { id: string }) => void>(),
 
   // Hygen Generated Props
   forceAppTheme: oneOf<Config.ThemeOptions>(Config.ThemeOptions),
@@ -270,7 +270,7 @@ export class DocumentView extends PureComponent<DocumentViewProps, any> {
       }
       if (this.props.onScaleChanged) {
         this.props.onScaleChanged({
-        	'scale': event.nativeEvent.zoom,
+          'scale': event.nativeEvent.zoom,
         });
       }
     } else if (event.nativeEvent.onZoomFinished) {
@@ -431,7 +431,7 @@ export class DocumentView extends PureComponent<DocumentViewProps, any> {
           'id': event.nativeEvent.id,
         });
       }
-    // Hygen Generated Event Listeners
+      // Hygen Generated Event Listeners
     } else if (event.nativeEvent.onCurrentToolbarChanged) {
       if (this.props.onCurrentToolbarChanged) {
         this.props.onCurrentToolbarChanged({
@@ -451,7 +451,7 @@ export class DocumentView extends PureComponent<DocumentViewProps, any> {
     return Promise.resolve();
   }
 
-  getAllFields = (pageNumber?: number): Promise<void |  Array<AnnotOptions.Field>> => {
+  getAllFields = (pageNumber?: number): Promise<void | Array<AnnotOptions.Field>> => {
     const tag = findNodeHandle(this._viewerRef);
     if (tag != null) {
       if (pageNumber === undefined) {
@@ -538,6 +538,14 @@ export class DocumentView extends PureComponent<DocumentViewProps, any> {
     const tag = findNodeHandle(this._viewerRef);
     if (tag != null) {
       return DocumentViewManager.flattenAnnotations(tag, formsOnly);
+    }
+    return Promise.resolve();
+  }
+
+  addAnnotations = (annotations: Array<AnnotOptions.Annotation>): Promise<void> => {
+    const tag = findNodeHandle(this._viewerRef);
+    if (tag != null) {
+      return DocumentViewManager.addAnnotations(tag, annotations);
     }
     return Promise.resolve();
   }
@@ -720,7 +728,7 @@ export class DocumentView extends PureComponent<DocumentViewProps, any> {
     return Promise.resolve();
   }
 
-  setAnnotationToolbarItemEnabled = (itemId: string, enable: boolean) : Promise<void> => {
+  setAnnotationToolbarItemEnabled = (itemId: string, enable: boolean): Promise<void> => {
     const tag = findNodeHandle(this._viewerRef);
     if (tag != null) {
       return DocumentViewManager.setAnnotationToolbarItemEnabled(tag, itemId, enable);
