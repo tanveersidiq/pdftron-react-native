@@ -3465,19 +3465,18 @@ public class DocumentView extends com.pdftron.pdf.controls.DocumentView2 {
 
                     HashMap<Annot, Integer> map = new HashMap<>(1);
                     map.put(annot, pageNum);
-                    toolManager.raiseAnnotationsPreRemoveEvent(map);
+                    toolManager.raiseAnnotationsPreModifyEvent(map);
 
                     Page page = pdfViewCtrl.getDoc().getPage(pageNum);
-                    page.annotRemove(annot);
+                    page.annotPushBack(annot);
                     pdfViewCtrl.update(annot, pageNum);
 
-                    toolManager.raiseAnnotationsRemovedEvent(map);
+                    toolManager.raiseAnnotationsModifiedEvent(map);
                 } finally {
                     if (shouldUnlock) {
                         pdfViewCtrl.docUnlock();
                     }
                 }
-                toolManager.deselectAll();
             }
         }
     }
