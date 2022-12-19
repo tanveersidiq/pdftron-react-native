@@ -3445,37 +3445,11 @@ public class DocumentView extends com.pdftron.pdf.controls.DocumentView2 {
     public int getPageCount() throws PDFNetException {
         return getPdfDoc().getPageCount();
     }
-    public void addAnnotations(ReadableArray annots) throws PDFNetException {
-        PDFViewCtrl pdfViewCtrl = getPdfViewCtrl();
-        int annotCount = annots.size();
-        ToolManager toolManager = (ToolManager) pdfViewCtrl.getToolManager();
-        for (int i = 0; i < annotCount; i++) {
-            ReadableMap annotData = annots.getMap(i);
-            if (null == annotData) {
-                continue;
-            }
-            String annotId = annotData.getString(KEY_ANNOTATION_ID);
-            int pageNum = annotData.getInt(KEY_ANNOTATION_PAGE);
-            Annot annot = ViewerUtils.getAnnotById(pdfViewCtrl, annotId, pageNum);
-            if (annot != null && annot.isValid()) {
-                boolean shouldUnlock = false;
-                try {
-                    pdfViewCtrl.docLock(true);
-                    shouldUnlock = true;
-
-                    HashMap<Annot, Integer> map = new HashMap<>(1);
-                    map.put(annot, pageNum);
-                    Page page = pdfViewCtrl.getDoc().getPage(pageNum);
-                    page.annotPushBack(annot);
-                    pdfViewCtrl.update(annot, pageNum);
-                } finally {
-                    if (shouldUnlock) {
-                        pdfViewCtrl.docUnlock();
-                    }
-                }
-            }
-        }
+    
+    public void addAnnotations(String xfdf) throws PDFNetException {
+        importAnnotations(xfdf, false);     
     }
+
     public void deleteAnnotations(ReadableArray annots) throws PDFNetException {
         PDFViewCtrl pdfViewCtrl = getPdfViewCtrl();
         int annotCount = annots.size();

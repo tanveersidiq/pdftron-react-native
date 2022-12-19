@@ -275,12 +275,12 @@ public class DocumentViewModule extends ReactContextBaseJavaModule implements Ac
     }
 
     @ReactMethod
-    public void addAnnotations(final int tag, final ReadableArray annots, final Promise promise) {
+    public void addAnnotations(final int tag, final String xfdf, final Promise promise) {
         getReactApplicationContext().runOnUiQueueThread(new Runnable() {
             @Override
             public void run() {
                 try {
-                    mDocumentViewInstance.addAnnotations(tag, annots);
+                    mDocumentViewInstance.addAnnotations(tag, xfdf);
                     promise.resolve(null);
                 } catch (Exception ex) {
                     promise.reject(ex);
